@@ -16,12 +16,33 @@ function createScene() {
   camera.speed = 0.25;
 
   const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
-  light.intensity = 0.7;
+  light.intensity = 0.9;
+  const keyLight = new BABYLON.DirectionalLight("keyLight", new BABYLON.Vector3(-0.4, -1, 0.6), scene);
+  keyLight.intensity = 1.1;
+  const fill = new BABYLON.PointLight("fill", new BABYLON.Vector3(3, 4, -3), scene);
+  fill.intensity = 12;
+
+  const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
+  groundMat.diffuseColor = new BABYLON.Color3(0.12, 0.16, 0.18);
+  groundMat.specularColor = new BABYLON.Color3(0.08, 0.08, 0.08);
 
   // EXPERIMENT HERE. Change one value, predict the result, save, and reload.
-  const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", { diameter: 2, segments: 32 }, scene);
-  sphere.position.y = 1;
-  const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 6, height: 6 }, scene);
+  const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", { diameter: 2.4, segments: 48 }, scene);
+  sphere.position.y = 1.2;
+  const sphereMat = new BABYLON.StandardMaterial("sphereMat", scene);
+  sphereMat.diffuseColor = new BABYLON.Color3(0.85, 0.08, 0.1);
+  sphereMat.specularColor = new BABYLON.Color3(1, 0.75, 0.45);
+  sphereMat.roughness = 0.28;
+  sphere.material = sphereMat;
+  const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 10, height: 10, subdivisions: 2 }, scene);
+  ground.material = groundMat;
+
+  const ring = BABYLON.MeshBuilder.CreateTorus("ring", { diameter: 3.6, thickness: 0.08, tessellation: 64 }, scene);
+  ring.rotation.x = Math.PI / 2;
+  ring.position.y = 0.04;
+  const ringMat = new BABYLON.StandardMaterial("ringMat", scene);
+  ringMat.emissiveColor = new BABYLON.Color3(1, 0.72, 0.08);
+  ring.material = ringMat;
 
   // Optional extension: add a differently named object and give it its own position.
   // Keep one scene creation, one render loop, and one resize listener.
